@@ -1,6 +1,6 @@
 #ifndef FRACTOL_H
 #define FRACTOL_H
-#include "lib/MLX42/include/MLX42/MLX42.h"
+#include "lib/include/MLX42/MLX42.h"
 #include <complex.h>
 #include <stdio.h>
 #include <errno.h>
@@ -10,10 +10,11 @@
 #include "libft/libft.h"
 #define WIDTH 1080
 #define HEIGHT 1080
-#define SCALE_W (WIDTH / 2)
-#define SCALE_H (HEIGHT / 2)
+#define SCALE_W (WIDTH / 4)
+#define SCALE_H (HEIGHT / 4)
 #define ITERATIONS 1000
-#define RADIX 2
+#define RADIUS 2
+#define RADIX RADIUS * 2
 #define FITERATIONS 10000000
 typedef struct complex_s{
   double x,y;

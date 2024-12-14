@@ -17,8 +17,8 @@ void julia_set(void *param){
 	int color;
 
 	color = 0x000000FF;
-	c.x = 0.11301;
-	c.y = -0.74543;
+	c.x = 0.081;
+	c.y = -0.174543;
 	x = 0;
 	y = 0;
 	i = 0;
@@ -27,8 +27,8 @@ void julia_set(void *param){
 	{
 		while(HEIGHT > y)
 		{
-			z.x = x / WIDTH;
-			z.y = y / HEIGHT;
+			z.x = x / SCALE_W - RADIUS;
+			z.y = y / SCALE_H - RADIUS;
 			while(z.x * z.x + z.y * z.y < RADIX && i < ITERATIONS)
 			{
 				tmp = z.x * z.x - z.y * z.y;

@@ -15,7 +15,7 @@ CC = cc
 INCLUDE_DIRS = libft
 INCLUDE = Makefile
 CFLAGS = -Wall -Wextra -Werror
-LIBMLX	:= ./lib/MLX42
+LIBMLX	:= ./lib/
 HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a libft/libft.a -ldl -lglfw -pthread -lm
 SRC = fractol.c \
@@ -34,17 +34,16 @@ OBJ_ALL := $(OBJ) $(OBJS)
 MAKE = make -C
 NAME = fractol
 
-all: libmlx $(NAME)
-$(NAME) : $(OBJ) libft.a
+all: $(NAME) 
+$(NAME) : libmlx $(OBJ) libft.a 
 	$(CC) $(CFLAGS) $(SRC) $(HEADERS) $(LIBS) -o $(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 libft.a:
 	$(MAKE) libft all supp
 libmlx:
-ifeq ("$(wildcard ./lib/src/mlx_init.c)","" )
-	git clone https://github.com/codam-coding-college/MLX42.git lib/MLX42	
-endif
+	-@if [ ! -e $(LIBMLX) ]; then \
+	git clone https://github.com/codam-coding-college/MLX42.git lib; fi
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 clean:
 	$(MAKE) libft clean
