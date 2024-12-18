@@ -6,7 +6,7 @@
 #    By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/14 13:14:15 by jtuomi            #+#    #+#              #
-#    Updated: 2024/12/04 15:01:31 by jtuomi           ###   ########.fr        #
+#    Updated: 2024/12/18 14:30:23 by jtuomi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,12 @@ CC = cc
 INCLUDE_DIRS = libft
 INCLUDE = Makefile
 CFLAGS = -Wall -Wextra -Werror
-LIBMLX	:= ./lib/
+LIBMLX	:= ./lib
 HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a libft/libft.a -ldl -lglfw -pthread -lm
 SRC = fractol.c \
-	julia.c
+	julia.c \
+	fern.c
 SRCS = $(shell find ./src -iname "*.c")
 SRC_FT = ft_atoi.c \
 	ft_ldiv.c \
@@ -42,8 +43,7 @@ $(NAME) : libmlx $(OBJ) libft.a
 libft.a:
 	$(MAKE) libft all supp
 libmlx:
-	-@if [ ! -e $(LIBMLX) ]; then \
-	git clone https://github.com/codam-coding-college/MLX42.git lib; fi
+	git clone https://github.com/codam-coding-college/MLX42.git $@
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 clean:
 	$(MAKE) libft clean
