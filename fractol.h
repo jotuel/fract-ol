@@ -1,6 +1,6 @@
 #ifndef FRACTOL_H
 #define FRACTOL_H
-#include "/lib/include/MLX42/MLX42.h"
+#include "/libmlx/include/MLX42/MLX42.h"
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
