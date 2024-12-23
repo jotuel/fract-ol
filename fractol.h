@@ -1,6 +1,6 @@
 #ifndef FRACTOL_H
 #define FRACTOL_H
-#include "/libmlx/include/MLX42/MLX42.h"
+#include "MLX42/include/MLX42/MLX42.h"
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -21,6 +21,16 @@ typedef struct complex_s {
   double complex x;
   double complex y;
 } complex_t;
+
+typedef struct julia_s {
+  double complex c;
+  double complex z;
+  double tmp;
+  double radius;
+  mlx_image_t *image;
+  int color;
+  int iter;
+} julia_t;
 
 typedef struct mandelbrot_s {
   double complex c;
@@ -45,9 +55,10 @@ typedef struct fern_s {
   } fern_t;
 
 void fern_initialize(void *param);
-void julia_set(void *param);
+void julia_initialize(void *param);
 typedef void (*mlx_scrollfunc)(double xdelta, double ydelta, void* param);
 void mlx_scroll_hook(mlx_t* mlx, mlx_scrollfunc func, void* param);
+void mandelbrot_initialize(void *param);
 
 
 
