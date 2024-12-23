@@ -6,7 +6,7 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:39:04 by jtuomi            #+#    #+#             */
-/*   Updated: 2024/12/18 14:43:59 by jtuomi           ###   ########.fr       */
+/*   Updated: 2024/12/22 22:26:50 by jtuomi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void fern_fractal(fern_t fern)
     {
         fern.r = ((double)rand() / (double)RAND_MAX);
         calculus(&fern);
-        mlx_put_pixel(fern.image, fern.xn * 100 + 300, fern.yn * 72, fern.color++);
+        mlx_put_pixel(fern.image, fern.xn * 100 + 300, fern.yn * 72, fern.color += fern.iter);
         fern.y = fern.yn;
         fern.x = fern.xn;
     }
