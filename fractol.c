@@ -6,7 +6,7 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:39:08 by jtuomi            #+#    #+#             */
-/*   Updated: 2024/12/23 15:54:54 by jtuomi           ###   ########.fr       */
+/*   Updated: 2024/12/24 13:40:40 by jtuomi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,13 @@ int	main(int argc, char *argv[])
 	mlx_image_t	*img;
 
     argument_count(argc);
-	mlx_set_setting(MLX_FULLSCREEN, true);
-	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	mlx = mlx_init(WIDTH, HEIGHT, "Fract'Ol", true);
 	if (!mlx)
 		ft_error();
-	img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	img = mlx_new_image(mlx, REN_WID, REN_HEI);
 	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
 		ft_error();
-	ft_memset(img->pixels, 0xFF00FFF0, img->width * img->height
-		* sizeof(int32_t));
-	mlx_image_to_window(mlx, img, 0, 0);
+	mlx_set_setting(MLX_STRETCH_IMAGE, true);	
 	mlx_loop_hook(mlx, ft_hook, mlx);
 	if (!ft_strncmp(argv[1], "fern", 5))
 		mlx_loop_hook(mlx, &fern_initialize, img);
