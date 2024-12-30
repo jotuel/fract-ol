@@ -10,6 +10,8 @@
 #include "libft/libft.h"
 #define WIDTH 1024
 #define HEIGHT 768
+#define REN_WID 512
+#define REN_HEI 384
 #define SCALE_W (WIDTH / 4)
 #define SCALE_H (HEIGHT / 4)
 #define ITERATIONS 256

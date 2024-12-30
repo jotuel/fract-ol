@@ -6,7 +6,7 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 14:02:32 by jtuomi            #+#    #+#             */
-/*   Updated: 2024/12/22 23:53:41 by jtuomi           ###   ########.fr       */
+/*   Updated: 2024/12/24 13:39:20 by jtuomi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static inline int get_rgba(int r, int g, int b, int a)
 
 static void calculate_values(mandelbrot_t *mb, int i, int x, int y)
 {
-    mb->z = CMPLX(x / (WIDTH * 0.5), y / (HEIGHT * 0.5));
+    mb->z = CMPLX(x / (REN_WID * 0.5), y / (REN_HEI * 0.5));
     while(pow(creal(mb->z), 2) + pow(cimag(mb->z), 2) < fabs(mb->radius) && 
     i < mb->iter)
     {
@@ -40,9 +40,9 @@ static void mandelbrot_set(void *param, int x, int y, int i)
     mandelbrot_t *mb;
 
     mb = param;
-    while(WIDTH > x)
+    while(REN_WID > x)
     {
-        while(HEIGHT > y)
+        while(REN_HEI > y)
         {
             calculate_values(mb, i, x, y);
             y++;
@@ -61,7 +61,7 @@ void mandelbrot_initialize(void *param)
     mandelbrot.image = image;
     mandelbrot.c = CMPLX(0.0 + 0.0 * I, 1. + -2.0 * I);
     mandelbrot.iter = ITERATIONS;
-    mandelbrot.radius = RADIUS;
+    mandelbrot.radius = RADIUS * RADIUS;
     mandelbrot.color = 0x000000FF;
     mandelbrot_set(&mandelbrot, 0, 0, 0);
 }
