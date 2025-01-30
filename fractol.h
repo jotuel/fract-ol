@@ -1,6 +1,12 @@
 #ifndef FRACTOL_H
 #define FRACTOL_H
+<<<<<<< Updated upstream
 #include "MLX42/include/MLX42/MLX42.h"
+=======
+#include "libmlx/include/MLX42/MLX42.h"
+#include "libmlx/include/MLX42/MLX42_Int.h"
+#include <complex.h>
+>>>>>>> Stashed changes
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -24,6 +30,7 @@ typedef struct complex_s {
   double complex y;
 } complex_t;
 
+<<<<<<< Updated upstream
 typedef struct julia_s {
   double complex c;
   double complex z;
@@ -43,6 +50,8 @@ typedef struct mandelbrot_s {
   int color;
   int iter;
 } mandelbrot_t;
+=======
+>>>>>>> Stashed changes
 
 typedef struct fern_s {
   double c;

@@ -1,6 +1,11 @@
 {
     "functionHeaderExtension.headerFilePath": "/home/jtuomi/Documents/SourceFiles/fract-ol/fractol.h",
     "files.associations": {
-        "fractol.h": "c"
+        "fractol.h": "c",
+        "mlx42_int.h": "c",
+        "stdlib.h": "c",
+        "memory.h": "c",
+        "stdio.h": "c",
+        "stdarg.h": "c"
     }
 }

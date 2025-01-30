@@ -15,42 +15,35 @@ CC = cc
 TARGET_REPO = https://github.com/codam-coding-college/MLX42.git
 INCLUDE_DIRS = libft
 INCLUDE = Makefile
-CFLAGS = -Wall -Wextra -Werror
-LIBMLX	:= MLX42
-HEADERS	:= -I ./include -I $(LIBMLX)/include
+CFLAGS = -Wall -Wextra -Werror -Ofast
+LIBMLX	:= ./libmlx
+HEADERS	:= -I ./libft -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a libft/libft.a -ldl -lglfw -pthread -lm
 SRC = fractol.c \
 	julia.c \
 	fern.c \
-	mandelbrot.c 
+	mandelbrot.c
 SRCS = $(shell find ./src -iname "*.c")
-SRC_FT = ft_atoi.c \
-	ft_ldiv.c \
-	ft_ltostr.c \
-	ft_strlen.c \
-	ft_printf.c \
-	specifiers.c \
-	more_specifiers.c
 OBJ := $(SRC:%.c=%.o)
-OBJS := $(addprefix libft/, :%.c=%.o) 
+OBJS := $(addprefix libft/, :%.c=%.o)
 OBJ_ALL := $(OBJ) $(OBJS)
 MAKE = make -C
 NAME = fractol
 
-all: $(NAME)
-force: ;
-$(NAME): $(OBJ) libft.a 
+all: $(NAME) ./libft/libft.a ./libmlx/build/libmlx42.a
+$(NAME): ./libmlx/build/libmlx42.a $(OBJ) ./libft/libft.a
 	$(CC) $(CFLAGS) $(SRC) $(HEADERS) $(LIBS) -o $(NAME)
-libmlx: force
-	@-if [ ! -d $@ ]; then git clone $(TARGET_REPO) $(LIBMLX); fi
-	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
-libft.a:
+./libft/libft.a:
 	$(MAKE) libft all supp
+./libmlx/buid/libmlx42.a:
+	git clone $(TARGET_REPO) $(LIBMLX)
+$(LIBMLX): ./libmlx/build/libmlx42.a
+	cmake $(LIBMLX) -B $(LIBMLX)/build && $(MAKE) $(LIBMLX)/build -j4
 clean:
 	$(MAKE) libft clean
-	@rm -rf $(LIBMLX)
+	$(MAKE) libmlx/build clean
 	rm -f $(OBJ)
 fclean: clean
 	$(MAKE) libft fclean

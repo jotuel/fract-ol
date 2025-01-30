@@ -6,7 +6,11 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:39:08 by jtuomi            #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2024/12/24 13:40:40 by jtuomi           ###   ########.fr       */
+=======
+/*   Updated: 2025/01/30 17:11:23 by marvin           \__/    i               */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +29,21 @@ static void	ft_hook(void *param)
 	ft_printf("WIDTH: %d | HEIGHT %d\n", mlx->width, mlx->height);
 }
 
+<<<<<<< Updated upstream
 static void argument_count(int argc)
+=======
+void my_keyhook(mlx_key_data_t keydata, void *param)
+{
+    mlx_t *mlx = param;
+
+    if (keydata.key == MLX_KEY_ESC && keydata.action == MLX_PRESS)
+        mlx_terminate(mlx);
+    if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
+        puts("Key up");
+}
+
+void my_scrollhook(double xdelta, double ydelta, void* param)
+>>>>>>> Stashed changes
 {
     if (argc != 2)
     {
