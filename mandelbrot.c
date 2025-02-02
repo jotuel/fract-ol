@@ -6,7 +6,7 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 14:02:32 by jtuomi            #+#    #+#             */
-/*   Updated: 2024/12/24 13:39:20 by jtuomi           ###   ########.fr       */
+/*   Updated: 2025/01/16 16:35:56 by jtuomi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,35 @@ static inline int get_rgba(int r, int g, int b, int a)
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
-static void calculate_values(mandelbrot_t *mb, int i, int x, int y)
+static void calculate_pixels(mandelbrot_t *mb, int i)
 {
-    mb->z = CMPLX(x / (REN_WID * 0.5), y / (REN_HEI * 0.5));
-    while(pow(creal(mb->z), 2) + pow(cimag(mb->z), 2) < fabs(mb->radius) && 
-    i < mb->iter)
+    if (cabs(mb->z) > 4)
     {
-        mb->tmp = pow(creal(mb->z), 2) - pow(cimag(mb->z), 2);
-        mb->tmp = 2 * creal(mb->z) * cimag(mb->z) * I;
-        mb->z = creal(mb->tmp) + creal(mb->c);
-        mb->z = cimag(mb->tmp) + cimag(mb->c);
-        i++;
+        mlx_put_pixel(mb->image, creal(mb->c) * SCALE_H + SCALE_W,
+                      cimag(mb->c) * SCALE_H+SCALE_W, 0xFFFFFFFF);
+        return ;
     }
-    if (i == mb->iter)
-        mlx_put_pixel(mb->image, x, y, mb->color);
-    else
-        mlx_put_pixel(mb->image, x, y, get_rgba(i, i, i, 0xFF));
+    if (i == ITERATIONS)
+        mlx_put_pixel(mb->image, creal(mb->c) * SCALE_H + SCALE_W,
+                      cimag(mb->c) * SCALE_H+SCALE_W, mb->color);
+    mb->z = pow(mb->z, 2) + mb->c;
+    calculate_pixels(mb, i + 1);
 }
 
-static void mandelbrot_set(void *param, int x, int y, int i)
+static void mandelbrot_set(void *param, int i, double x, double y)
 {
     mandelbrot_t *mb;
 
     mb = param;
-    while(REN_WID > x)
+    while(x < 2.0)
     {
-        while(REN_HEI > y)
+        while(y < 1)
         {
-            calculate_values(mb, i, x, y);
-            y++;
+            mb->c = CMPLX(y, x * I);
+            calculate_pixels(mb, i);
         }
-        y = 0;
-        x++;
+        y = -1;
+        x += 0.0015;
     }
 }
 
@@ -59,9 +56,9 @@ void mandelbrot_initialize(void *param)
 
     image = param;
     mandelbrot.image = image;
-    mandelbrot.c = CMPLX(0.0 + 0.0 * I, 1. + -2.0 * I);
+    mandelbrot.z = 0;
     mandelbrot.iter = ITERATIONS;
     mandelbrot.radius = RADIUS * RADIUS;
     mandelbrot.color = 0x000000FF;
-    mandelbrot_set(&mandelbrot, 0, 0, 0);
+    mandelbrot_set(&mandelbrot, 0, -2, -1);
 }

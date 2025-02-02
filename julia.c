@@ -6,7 +6,7 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 23:43:47 by jtuomi            #+#    #+#             */
-/*   Updated: 2024/12/24 13:38:02 by jtuomi           ###   ########.fr       */
+/*   Updated: 2025/01/16 16:41:43 by jtuomi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static inline int	get_rgba(int r, int g, int b, int a)
 
 static void	calculate_values(julia_t *julia, int i, int x, int y)
 {
-	julia->z = CMPLX(x / (REN_WID * 0.5), y / (REN_HEI * 0.5));
+	julia->z = CMPLX(x / REN_WID, y / REN_HEI);
 	while (pow(creal(julia->z), 2) + pow(cimag(julia->z), 2) < julia->radius
 		&& i > julia->iter)
 	{
@@ -59,7 +59,7 @@ void	julia_initialize(void *param)
 	complex double	b;
 
 	a = 0.0 + 0.0 * I;
-	b = 1. + -2.0 * I;
+	b = 0.5 + -0.4 * I;
 	jul.c = CMPLX(a, b);
 	jul.iter = 255;
 	jul.color = 0x000000FF;

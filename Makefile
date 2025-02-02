@@ -6,7 +6,7 @@
 #    By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/14 13:14:15 by jtuomi            #+#    #+#              #
-#    Updated: 2024/12/23 15:45:14 by jtuomi           ###   ########.fr        #
+#    Updated: 2025/02/02 15:12:41 by jtuomi           \__/    i                #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,10 @@ CC = cc
 TARGET_REPO = https://github.com/codam-coding-college/MLX42.git
 INCLUDE_DIRS = libft
 INCLUDE = Makefile
-CFLAGS = -Wall -Wextra -Werror -Ofast
-LIBMLX	:= ./libmlx
-HEADERS	:= -I ./libft -I $(LIBMLX)/include
+CFLAGS = -Wall -Wextra -Werror
+LIBMLX	:= libmlx
+CFLAGS = -Wall -Wextra -Werror -O3 -ffast-math -flto
+HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a libft/libft.a -ldl -lglfw -pthread -lm
 SRC = fractol.c \
 	julia.c \
