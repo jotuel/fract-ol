@@ -7,22 +7,18 @@
 #include <limits.h>
 #include <string.h>
 #include <tgmath.h>
+#include <complex.h>
 #include "libft/libft.h"
 #define WIDTH 1024
 #define HEIGHT 768
-#define REN_WID 512
-#define REN_HEI 384
-#define SCALE_W (WIDTH / 4)
-#define SCALE_H (HEIGHT / 4)
+#define REN_WID 1024
+#define REN_HEI 786
+#define SCALE_W (WIDTH / 2)
+#define SCALE_H (HEIGHT / 2)
 #define ITERATIONS 256
 #define RADIUS 2.0
 #define RADIX RADIUS * 2
 #define FITERATIONS 10000000
-
-typedef struct complex_s {
-  double complex x;
-  double complex y;
-} complex_t;
 
 typedef struct julia_s {
   double complex c;
