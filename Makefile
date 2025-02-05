@@ -30,8 +30,8 @@ OBJ_ALL := $(OBJ) $(OBJS)
 MAKE = make -C
 NAME = fractol
 
-all: $(NAME) ./libft/libft.a ./libmlx/build/libmlx42.a
-$(NAME): ./libmlx/build/libmlx42.a $(OBJ) ./libft/libft.a
+all: ./libft/libft.a ./libmlx/build/libmlx42.a $(NAME)
+$(NAME): $(OBJ) ./libft/libft.a
 	$(CC) $(CFLAGS) $(SRC) $(HEADERS) $(LIBS) -o $(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
@@ -39,7 +39,6 @@ $(NAME): ./libmlx/build/libmlx42.a $(OBJ) ./libft/libft.a
 	$(MAKE) libft all supp
 ./libmlx/buid/libmlx42.a:
 	git clone $(TARGET_REPO) $(LIBMLX)
-$(LIBMLX): ./libmlx/build/libmlx42.a
 	cmake $(LIBMLX) -B $(LIBMLX)/build && $(MAKE) $(LIBMLX)/build -j4
 clean:
 	$(MAKE) libft clean

@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 14:02:32 by jtuomi            #+#    #+#             */
-/*   Updated: 2024/12/24 13:39:20 by jtuomi           ###   ########.fr       */
+/*   Updated: 2025/02/05 19:46:07 by jtuomi           \__/    i               */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +18,56 @@ static inline int get_rgba(int r, int g, int b, int a)
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
-static void calculate_values(mandelbrot_t *mb, int i, int x, int y)
+static inline double cnorm(double complex z)
 {
-    mb->z = CMPLX(x / (REN_WID * 0.5), y / (REN_HEI * 0.5));
-    while(pow(creal(mb->z), 2) + pow(cimag(mb->z), 2) < fabs(mb->radius) && 
-    i < mb->iter)
-    {
-        mb->tmp = pow(creal(mb->z), 2) - pow(cimag(mb->z), 2);
-        mb->tmp = 2 * creal(mb->z) * cimag(mb->z) * I;
-        mb->z = creal(mb->tmp) + creal(mb->c);
-        mb->z = cimag(mb->tmp) + cimag(mb->c);
-        i++;
-    }
-    if (i == mb->iter)
-        mlx_put_pixel(mb->image, x, y, mb->color);
-    else
-        mlx_put_pixel(mb->image, x, y, get_rgba(i, i, i, 0xFF));
+    return (creal(z) * creal(z) + cimag(z) * cimag(z));
 }
 
-static void mandelbrot_set(void *param, int x, int y, int i)
+static void calculate_values(double x, double complex c,
+                             double complex z, double y)
+{
+    double dwell;
+    double g;
+    int i;
+
+    i = 0;
+    while(i < ITERATIONS)
+    {
+        z = z * z + c;
+        if (cnorm(z) > RADIUS)
+            break;
+    }
+    g = 1.;
+    if (i < ITERATIONS)
+    {
+        dwell = i + 1 - log2(log(cabs(z)));
+        g = 0.5 - 0.5 * cos(M_PI * dwell);
+    }
+    return (255 * g + 255);
+}
+
+static void mandelbrot_set(void *param, int j, int h, int i)
 {
     mandelbrot_t *mb;
+    double y;
+    double x;
+    double complex c;
+    double complex z;
 
     mb = param;
-    while(REN_WID > x)
+    while(WIDTH > j)
     {
-        while(REN_HEI > y)
+        y = (REN_HEI - (j + 0.5) / REN_HEI * RADIUS);
+        while(HEIGHT > h)
         {
-            calculate_values(mb, i, x, y);
-            y++;
+            x = (y + 0.5 - REN_WID / 2) / REN_WID * RADIUS;
+            c = x + I * y;
+            z = 0;
+            mlx_put_pixel(mb->image, j, h, calculate_values(x, c, z, y));
+            h++;
         }
-        y = 0;
-        x++;
+        h = 0;
+        j++;
     }
 }
 

@@ -1,12 +1,8 @@
 #ifndef FRACTOL_H
 #define FRACTOL_H
-<<<<<<< Updated upstream
-#include "MLX42/include/MLX42/MLX42.h"
-=======
 #include "libmlx/include/MLX42/MLX42.h"
 #include "libmlx/include/MLX42/MLX42_Int.h"
 #include <complex.h>
->>>>>>> Stashed changes
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
