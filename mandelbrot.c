@@ -7,7 +7,7 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 14:02:32 by jtuomi            #+#    #+#             */
-/*   Updated: 2025/02/10 15:28:30 by marvin           \__/    i               */
+/*   Updated: 2025/02/10 15:50:20 by marvin           \__/    i               */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ static void mandelbrot_set(t_mandelbrot *mb, int j, int h)
 
     while(mb->w > j)
     {
-        #pragma omp parallel num_threads(12)
         y = (mb->h / 2 - (j + 0.5)) / (mb->h / 2) * RADIUS;
         while(mb->h > h)
         {
