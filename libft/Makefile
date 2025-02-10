@@ -11,7 +11,8 @@
 # **************************************************************************** #
 
 CC = cc
-SRCS = ft_atoi.c \
+SRCS = ft_atof.c \
+	ft_atoi.c \
 	ft_bzero.c \
 	ft_calloc.c \
 	ft_isalnum.c \

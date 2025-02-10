@@ -6,45 +6,46 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 23:43:47 by jtuomi            #+#    #+#             */
-/*   Updated: 2024/12/24 13:38:02 by jtuomi           ###   ########.fr       */
+/*   Updated: 2025/02/10 13:54:18 by marvin           \__/    i               */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static inline int	get_rgba(int r, int g, int b, int a)
+static int	calculate_values(t_julia *julia, int i, double complex z)
 {
-	return (r << 24 | g << 16 | b << 8 | a);
-}
+	double dwell;
+	double g;
 
-static void	calculate_values(julia_t *julia, int i, int x, int y)
-{
-	julia->z = CMPLX(x / (REN_WID * 0.5), y / (REN_HEI * 0.5));
-	while (pow(creal(julia->z), 2) + pow(cimag(julia->z), 2) < julia->radius
-		&& i > julia->iter)
+	while(++i < ITERATIONS)
 	{
-		julia->tmp = pow(creal(julia->z), 2) - pow(cimag(julia->z), 2)
-			+ creal(julia->c);
-		julia->z = CMPLX(julia->tmp, 2 * creal(julia->z) * cimag(julia->z) * I +
-		cimag(julia->c));
-		i++;
+		z = z * z + julia->c;
+		if (cnorm(z) > RADIUS)
+			break;
 	}
-	if (i == julia->iter)
-		mlx_put_pixel(julia->image, x, y, julia->color);
-	else
-		mlx_put_pixel(julia->image, x, y, get_rgba(i, i, i, 0xFF));
+	g = 1.;
+	if (i < ITERATIONS)
+	{
+	dwell = i + 1 - log2(log(cabs(julia->z)));
+	g = 0.5 - 0.5 * cos(M_PI * dwell);
+	}
+	i = 255 * g;
+	return (get_rgba(i, i , i, 255));
 }
 
-static void	julia_set(void *param, int x, int y, int i)
+static void	julia_set(t_julia *julia, int x, int y, int i)
 {
-	julia_t	*julia;
+	double w;
+	double h;
 
-	julia = param;
 	while (WIDTH > x)
 	{
+		w = (WIDTH / 2 - (x + 0.5)) / (HEIGHT / 2) * RADIUS;
 		while (HEIGHT > y)
 		{
-			calculate_values(julia, i, x, y);
+			h = (y + 0.5 - WIDTH / 2) / (HEIGHT / 2) * RADIUS;
+			julia->z = h + I * w;
+			mlx_put_pixel(julia->image, x, y, calculate_values(julia, i, julia->z));
 			y++;
 		}
 		y = 0;
@@ -54,17 +55,10 @@ static void	julia_set(void *param, int x, int y, int i)
 
 void	julia_initialize(void *param)
 {
-	julia_t			jul;
-	complex double	a;
-	complex double	b;
+	t_julia*			jul;
 
-	a = 0.0 + 0.0 * I;
-	b = 1. + -2.0 * I;
-	jul.c = CMPLX(a, b);
-	jul.iter = 255;
-	jul.color = 0x000000FF;
-	jul.radius = RADIUS;
-	jul.tmp = 0.0;
-	jul.image = param;
-	julia_set(&jul, 0, 0, 0);
+	jul = param;
+	jul->iter = 255;
+	jul->radius = RADIUS;
+	julia_set(jul, 0, 0, 0);
 }

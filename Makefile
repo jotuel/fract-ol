@@ -6,7 +6,7 @@
 #    By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/14 13:14:15 by jtuomi            #+#    #+#              #
-#    Updated: 2024/12/23 15:45:14 by jtuomi           ###   ########.fr        #
+#    Updated: 2025/02/10 00:31:58 by marvin           \__/    i                #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,37 +15,40 @@ CC = cc
 TARGET_REPO = https://github.com/codam-coding-college/MLX42.git
 INCLUDE_DIRS = libft
 INCLUDE = Makefile
-CFLAGS = -Wall -Wextra -Werror -Ofast
-LIBMLX	:= ./libmlx
-HEADERS	:= -I ./libft -I $(LIBMLX)/include
-LIBS	:= $(LIBMLX)/build/libmlx42.a libft/libft.a -ldl -lglfw -pthread -lm
+HEADERS	:= -Iinclude -IMLX42/include/MLX42
+CFLAGS = -Wall -Wextra -Werror -O3 -ffast-math -flto $(HEADERS) -fopenmp
+MLX	:= MLX42
+LIBS	:= -L $(MLX)/build -lmlx42 -L libft -lft -ldl -lglfw -pthread -lm
 SRC = fractol.c \
 	julia.c \
 	fern.c \
-	mandelbrot.c
-SRCS = $(shell find ./src -iname "*.c")
+	mandelbrot.c \
+	hook.c \
+	util.c
 OBJ := $(SRC:%.c=%.o)
-OBJS := $(addprefix libft/, :%.c=%.o)
-OBJ_ALL := $(OBJ) $(OBJS)
 MAKE = make -C
 NAME = fractol
 
-all: ./libft/libft.a ./libmlx/build/libmlx42.a $(NAME)
-$(NAME): $(OBJ) ./libft/libft.a
-	$(CC) $(CFLAGS) $(SRC) $(HEADERS) $(LIBS) -o $(NAME)
+all: $(NAME)
+$(NAME): mlx libft/libft.a $(OBJ)
+	$(CC) $(CFLAGS) $(SRC) $(LIBS) -o $(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
-./libft/libft.a:
+libft/libft.a:
 	$(MAKE) libft all supp
-./libmlx/buid/libmlx42.a:
-	git clone $(TARGET_REPO) $(LIBMLX)
-	cmake $(LIBMLX) -B $(LIBMLX)/build && $(MAKE) $(LIBMLX)/build -j4
+mlx: $(MLX)
+$(MLX):
+	git clone $(TARGET_REPO) $@
+	cmake $(MLX) -B $(MLX)/build
+	$(MAKE) $(MLX)/build -j4
+
 clean:
 	$(MAKE) libft clean
-	$(MAKE) libmlx/build clean
+	$(MAKE) $(MLX)/build clean
 	rm -f $(OBJ)
 fclean: clean
 	$(MAKE) libft fclean
+	rm -rf $(MLX)
 	rm -f $(NAME)
 re: fclean all
 

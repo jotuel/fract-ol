@@ -6,13 +6,13 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:39:04 by jtuomi            #+#    #+#             */
-/*   Updated: 2024/12/22 22:26:50 by jtuomi           ###   ########.fr       */
+/*   Updated: 2025/02/09 23:57:39 by marvin           \__/    i               */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void calculus(fern_t *fern)
+static void calculus(t_fern *fern)
 {
         if (fern->r < 0.01)
         {
@@ -36,21 +36,22 @@ static void calculus(fern_t *fern)
         }
 }
 
-static void fern_fractal(fern_t fern)
+static void fern_fractal(t_fern fern)
 {
     while (fern.iter++ < FITERATIONS)
     {
         fern.r = ((double)rand() / (double)RAND_MAX);
         calculus(&fern);
-        mlx_put_pixel(fern.image, fern.xn * 100 + 300, fern.yn * 72, fern.color += fern.iter);
+        mlx_put_pixel(fern.image, fern.xn * 100 + 300, fern.yn * 72, fern.color);
         fern.y = fern.yn;
         fern.x = fern.xn;
+        fern.color += 1;
     }
 }
 
 void fern_initialize(void *param)
 {
-    fern_t fern;
+    t_fern fern;
 
     fern.iter = 0;
     fern.x = 0.0;
@@ -59,6 +60,6 @@ void fern_initialize(void *param)
     fern.yn = 0.0;
     fern.c = 0.0;
     fern.image = param;
-    fern.color = 0xFFFFFFFF;
+    fern.color = 0x00FF00FF;
     fern_fractal(fern);
 }
