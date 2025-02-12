@@ -7,7 +7,7 @@
 /*   By: jtuomi <jtuomi@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 14:02:32 by jtuomi            #+#    #+#             */
-/*   Updated: 2025/02/10 15:50:20 by marvin           \__/    i               */
+/*   Updated: 2025/02/12 11:48:56 by marvin           \__/    i               */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int calculate_values(t_mandelbrot *mb,
     {
         dc = 2 * z * dc + 1;
         z = z * z + c;
-        if (cnorm(z) > RADIX)
+        if (cnorm(z) > mb->radius)
             break;
     }
     if (i < mb->iter)
@@ -77,41 +77,39 @@ static int calculate_values(t_mandelbrot *mb,
         return (-1);
 }
 
-static void mandelbrot_set(t_mandelbrot *mb, int j, int h)
+static void mandelbrot_set(t_mandelbrot *mb, int w, int h)
 {
     double y;
     double x;
 
 
-    while(mb->w > j)
+    while(mb->w > w)
     {
-        y = (mb->h / 2 - (j + 0.5)) / (mb->h / 2) * RADIUS;
+        y = (mb->h / 2. - (w + mb->x + 0.5)) / (mb->h / 2.) * RADIUS;
         while(mb->h > h)
         {
-            x = (h + 0.5 - mb->w / 2) / (mb->h / 2) * RADIUS;
-            mb->c = x + I * y;
-             mlx_put_pixel(mb->image, j, h, calculate_values(mb, mb->c, 0, 0));
+            x = (h + mb->y + 0.5 - mb->w / 2.) / (mb->h / 2.) * RADIUS;
+            mb->c = x * mb->zoom + I * (y * mb->zoom);
+            mlx_put_pixel(mb->image, w, h, calculate_values(mb, mb->c, 0, 0));
             h++;
         }
         h = 0;
-        j++;
+        w++;
     }
 }
 
 void mandelbrot_initialize(void *param)
 {
-    static t_mandelbrot mandelbrot;
-    mlx_image_t* image;
+    t_mandelbrot* mandelbrot;
 
-    image = param;
-    mandelbrot.aa = 4;
-    mandelbrot.w = WIDTH * mandelbrot.aa;
-    mandelbrot.h = HEIGHT * mandelbrot.aa;
-    mandelbrot.px = RADIUS / mandelbrot.w / 2;
-    mandelbrot.image = image;
-    mandelbrot.zoom = 1.;
-    mandelbrot.iter = ITERATIONS;
-    mandelbrot.radius = RADIUS * RADIUS;
-    mandelbrot.as_rat = (double)WIDTH / (double)HEIGHT;
-    mandelbrot_set(&mandelbrot, 0, 0);
+    mandelbrot = param;
+    mandelbrot->aa = 1;
+    mandelbrot->w = mandelbrot->image->width;
+    mandelbrot->h = mandelbrot->image->height;
+    mandelbrot->px = RADIUS / mandelbrot->w / 2;
+    mandelbrot->radius = RADIX;
+    mandelbrot->iter = ITERATIONS;
+    mandelbrot->as_rat = (double)mandelbrot->image->width / (double)mandelbrot->image->height;
+    printf("x:%f y:%f", mandelbrot->x, mandelbrot->y);
+    mandelbrot_set(mandelbrot, 0, 0);
 }

@@ -6,10 +6,11 @@
 /*   By: marvin <marvin@42.fr>                     \__/  \__/ e _>(_| | --    */
 /*                                                 /  \__/  \ .  _  _ |       */
 /*   Created: 2025/02/08 23:22:09 by marvin        \__/  \__/ f (_)(_)|       */
-/*   Updated: 2025/02/09 23:59:54 by marvin           \__/    i               */
+/*   Updated: 2025/02/12 11:48:57 by marvin           \__/    i               */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "MLX42/include/MLX42/MLX42.h"
 #include "fractol.h"
 
 void	ft_error(void)
@@ -27,12 +28,25 @@ void	ft_hook(void *param)
 
 void my_keyhook(mlx_key_data_t keydata, void *param)
 {
-    mlx_t *mlx = param;
+    t_mandelbrot *mlx;
 
-    if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
-        mlx_terminate(mlx);
-    if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
-        puts("Key up");
+    mlx = param;
+    if (keydata.key == MLX_KEY_ESCAPE)
+        mlx_close_window(mlx->mlx);
+    if (keydata.key == MLX_KEY_UP)
+        mlx->y -= 5;
+    if (keydata.key == MLX_KEY_DOWN)
+        mlx->y += 5;
+    if (keydata.key == MLX_KEY_LEFT)
+        mlx->x -= 5;
+    if (keydata.key == MLX_KEY_RIGHT)
+        mlx->x += 5;
+    if (keydata.key == MLX_KEY_SPACE)
+    {
+        mlx->x = 0;
+        mlx->y = 0;
+        mlx->zoom = 1.;
+    }
 }
 
 void argument_count(int argc)
@@ -51,15 +65,21 @@ void my_scrollhook(double xdelta, double ydelta, void *param)
     int y;
 
 	mlx = param;
-	if (ydelta > 0)
+    mlx_get_mouse_pos(mlx->mlx, &x, &y);
+    if (ydelta > 0)
     {
-        mlx_get_mouse_pos(mlx->mlx, &x, &y);
-        mlx->zoom -= .05;
+        if (mlx->iter == I_MAX)
+            mlx->iter += ydelta;
+        mlx->zoom *= 0.99;
+        mlx->x =  x / (mlx->zoom * 6);
+        mlx->y =  y / (mlx->zoom * 6);
     }
-	else if (ydelta < 0)
+	else
     {
-        mlx_get_mouse_pos(mlx->mlx, &x, &y);
-        mlx->zoom += .05;
+        mlx->zoom *= 1.01;
+        mlx->x -= x * (mlx->zoom * 6);
+        mlx->y -= y * (mlx->zoom * 6);
     }
+    printf("x:%f y:%f", mlx->x, mlx->y);
 	(void)xdelta;
 }

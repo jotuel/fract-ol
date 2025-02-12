@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                     \__/  \__/ e _>(_| | --    */
 /*                                                 /  \__/  \ .  _  _ |       */
 /*   Created: 2025/02/09 23:45:47 by marvin        \__/  \__/ f (_)(_)|       */
-/*   Updated: 2025/02/10 14:24:50 by marvin           \__/    i               */
+/*   Updated: 2025/02/12 11:36:13 by marvin           \__/    i               */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef FRACTOL_H
@@ -23,7 +23,9 @@
 # include <tgmath.h>
 # define WIDTH 800
 # define HEIGHT 800
+# define AA 1
 # define ITERATIONS 256
+# define I_MAX 8000
 # define RADIUS 2.0
 # define RADIX 625
 # define FITERATIONS 10000000
@@ -35,14 +37,16 @@ typedef struct s_fractol
 	double complex	z;
 	double complex  dc;
 	double complex  de;
+	double zoom;
 	double			radius;
 	double val;
 	double hue;
 	double sat;
 	double px;
+	double x;
+	double y;
 	mlx_image_t		*image;
 	int				as_rat;
-	int				zoom;
 	int				iter;
 	int             w;
 	int             h;
